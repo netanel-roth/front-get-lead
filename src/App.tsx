@@ -1,8 +1,8 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { router } from './routes/router'
 import { RouterProvider } from 'react-router-dom';
+
 
 function App() {
   return (<>

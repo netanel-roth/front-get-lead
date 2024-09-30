@@ -1,6 +1,6 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom'
 import paths from './paths'
-import ButtonRow from '../pages/LoginPage'
+import ButtonRow from '../login/LoginPage'
 
 
 export const router = createBrowserRouter(

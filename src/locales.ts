@@ -3,7 +3,8 @@ export const messages = {
         LOGIN_TITLE: '!ברוכים הבאים',
         ENTER_EMAIL:'?מה כתובת המייל שלך',
         CONTINUE_MESSAGE:'המשך',
-        LOGIN_WITH_EMAIL_TITLE:'התחברות באמצעות מייל'
+        SEND_EMAIL_MESSAGE:'יישלח לך קוד אימות',
+        LOGIN_WITH_EMAIL_BODY:'למייל'
     }
    
 }
