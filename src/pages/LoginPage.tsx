@@ -11,9 +11,8 @@ const ButtonRow: React.FC = () => {
     return (
         <div style={styles.container}>
             <h1 style={styles.header}>{messages.login.LOGIN_TITLE}</h1>
-            <Button label="Button 1" className="p-button-rounded" style={styles.button} />
-            {/* <input type="email" placeholder="הכנס מייל" style={styles.input} /> */}
-            <InputText value={email} onChange={(e) => setEmail(e.target.value)} />
+            <Button id = "username"label={messages.login.LOGIN_WITH_EMAIL_TITLE} className="p-button-rounded" style={styles.button} />
+            <InputText type = "email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder='?מה המייל שלך'/>
             <Button label="המשך" className="p-button" style={styles.continueButton} />
         </div>
     );
@@ -35,11 +34,12 @@ const styles = {
         color:colors.ORANGE_COLOR
     },
     button: {
-        backgroundColor: '#FFFFFF',
-        color: '#000000',
+        backgroundColor: colors.WHITE_COLOR,
+        color: colors.BLUE_COLOR,
         border: '1px solid #CCCCCC',
         height: '100px', // גובה קבוע לכפתור ריבועי
         width: '200px', // רוחב קבוע לכפתור ריבועי
+        marginTop:'60px'
     },
     input: {
         padding: '0.5rem',
@@ -47,6 +47,7 @@ const styles = {
         borderRadius: '5px',
         border: '1px solid #CCCCCC',
         width: '250px',
+        marginTop:'60px'
     },
     continueButton: {
         backgroundColor: colors.ORANGE_COLOR,
