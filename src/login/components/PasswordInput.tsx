@@ -1,6 +1,6 @@
 import { Password } from 'primereact/password';
 import { ChangeEvent, useState } from 'react';
-import styles from '../../css/styles';
+import '../../css/loginStyles.css'
 
 
 const PasswordInput = (props: ChangeValueProps) => {
@@ -10,8 +10,8 @@ const PasswordInput = (props: ChangeValueProps) => {
     }
 
     return (
-        <Password 
-            style={styles.input}
+        <Password
+            className='input'
             value={value}
             onChange={handleChange}
             placeholder='?מה הסיסמא שלך'

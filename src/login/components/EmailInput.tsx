@@ -1,7 +1,6 @@
 import { InputText } from 'primereact/inputtext';
 import { ChangeEvent } from 'react';
-import styles from '../../css/styles';
-
+import '../../css/loginStyles.css'
 
 const EmailInput = (props: ChangeValueProps) => {
     const { value, onChangeValue } = props;
@@ -11,7 +10,7 @@ const EmailInput = (props: ChangeValueProps) => {
     }
     return (
         <InputText 
-            style={styles.input}
+            className='input'
             type="email"
             value={value}
             onChange={handleChange}
