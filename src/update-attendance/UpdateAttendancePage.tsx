@@ -7,7 +7,7 @@ import { DataToSendType } from '../types/updateAttendanceTypes'
 const UpdateAttendancePage: React.FC = () => {
     const [currentTime, setCurrentTime] = useState<Date>(new Date());
     const [isClockRunning, setIsClockRunning] = useState<boolean>(false);
-    const [showInput, setShowInput] = useState<boolean>(true);
+    const [showInput, setShowInput] = useState<boolean>(false);
     const [startTime, setStartTime] = useState<Date | null>(null);
     const [userInput, setUserInput] = useState<string>('');
     const [inputError, setInputError] = useState<boolean>(false);
