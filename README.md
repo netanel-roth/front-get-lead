@@ -2,7 +2,7 @@
 <details>
     <summary>Working with git steps:</summary>
     <ul>
-        <li> GIT CLONE https://github.com/ECHOfindLove/ECHO </li>
+        <li> GIT CLONE https://github.com/LinoyHi/R-Roth.git </li>
         <li> git checkout development</li>
         <li> git branch (name your branch) </li>
         <li> git checkout (your branch name) </li>
@@ -20,7 +20,7 @@
 <details>
     <summary>Working with git steps for Server work:</summary>
     <ul>
-        <li> GIT CLONE https://github.com/ECHOfindLove/ECHO </li>
+        <li> GIT CLONE https://github.com/LinoyHi/R-Roth.git </li>
         <li> git checkout development</li>
         <li> git checkout server</li>
         <li> git branch (name your branch) </li>
