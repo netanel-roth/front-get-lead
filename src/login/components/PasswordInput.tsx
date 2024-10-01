@@ -1,6 +1,8 @@
 import { Password } from 'primereact/password';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent } from 'react';
 import '../../css/loginStyles.css'
+import { messages } from '../../locales';
+import { ChangeValueProps } from '../../types/loginTypes';
 
 
 const PasswordInput = (props: ChangeValueProps) => {
@@ -14,7 +16,7 @@ const PasswordInput = (props: ChangeValueProps) => {
             className='input'
             value={value}
             onChange={handleChange}
-            placeholder='?מה הסיסמא שלך'
+            placeholder={messages.login.ENTER_PASSWORD}
             toggleMask
             feedback={false}
         />

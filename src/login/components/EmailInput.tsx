@@ -1,6 +1,9 @@
 import { InputText } from 'primereact/inputtext';
 import { ChangeEvent } from 'react';
 import '../../css/loginStyles.css'
+import { messages } from '../../locales';
+import { ChangeValueProps } from '../../types/loginTypes';
+
 
 const EmailInput = (props: ChangeValueProps) => {
     const { value, onChangeValue } = props;
@@ -14,7 +17,7 @@ const EmailInput = (props: ChangeValueProps) => {
             type="email"
             value={value}
             onChange={handleChange}
-            placeholder='?מה המייל שלך'
+            placeholder={messages.login.ENTER_EMAIL}
         />
     )
 }

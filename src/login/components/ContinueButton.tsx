@@ -1,5 +1,6 @@
 import { Button } from 'primereact/button';
 import '../../css/loginStyles.css'
+import { OnLoginProps } from '../../types/loginTypes';
 
 
 const ContinueButton = (props:OnLoginProps) => {

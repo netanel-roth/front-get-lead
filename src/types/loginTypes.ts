@@ -1,8 +1,8 @@
-type ChangeValueProps = {
+export type ChangeValueProps = {
     value:string
     onChangeValue: (value:string) => void;
 }
 
-type OnLoginProps={
+export type OnLoginProps={
     onLogin:() => void;
 }

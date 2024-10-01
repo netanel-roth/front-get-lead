@@ -1,15 +1,11 @@
-import React, { ChangeEvent, useState } from 'react';
-import 'primereact/resources/themes/lara-light-blue/theme.css'; // ניתן לשנות את הנושא בהתאם לרצונך
-import 'primereact/resources/primereact.min.css';
-import 'primeicons/primeicons.css';
-
-import { colors, messages } from '../locales';
+import React, { useState } from 'react';
+import { messages } from '../locales';
 import ContinueButton from './components/ContinueButton';
 import EmailInput from './components/EmailInput';
 import PasswordInput from './components/PasswordInput';
 import '../css/loginStyles.css'
 
-const ButtonRow: React.FC = () => {
+const LoginPage: React.FC = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const handleEmailInputChange = (value:string) => {
@@ -34,5 +30,5 @@ const ButtonRow: React.FC = () => {
 };
 
 
-export default ButtonRow;
+export default LoginPage;
 

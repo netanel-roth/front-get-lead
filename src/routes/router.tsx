@@ -1,6 +1,6 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom'
 import paths from './paths'
-import ButtonRow from '../login/LoginPage'
+import LoginPage from '../login/LoginPage'
 
 
 export const router = createBrowserRouter(
@@ -11,7 +11,7 @@ export const router = createBrowserRouter(
         },
         {
             path: paths.LOGIN,
-            element: <ButtonRow />
+            element: <LoginPage />
         }
     ]
 )
