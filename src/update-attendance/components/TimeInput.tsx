@@ -1,6 +1,9 @@
 import React from 'react';
+import { InputAttendanceProps } from '../../types/updateAttendanceTypes'
 
-const TimeInput = ({ value, onChange }) => {
+
+const TimeInput = (props: InputAttendanceProps) => {
+    const { value, onChange } = props;
     return (
         <textarea
             value={value}

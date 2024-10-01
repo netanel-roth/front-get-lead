@@ -1,8 +1,10 @@
 import React from 'react';
-import LoginIcon from '@mui/icons-material/Login';
-import LogoutIcon from '@mui/icons-material/Logout';
+// import LoginIcon from '@mui/icons-material/Login';
+// import LogoutIcon from '@mui/icons-material/Logout';
+import { ButtonAttendanceProps } from '../../types/updateAttendanceTypes';
 
-const TimeButton = ({ isClockRunning, currentTime, onClick }) => {
+const TimeButton = (props:ButtonAttendanceProps) => {
+    const {onClick,isClockRunning,currentTime}=props;
     return (
         <button
             onClick={onClick}
@@ -19,11 +21,11 @@ const TimeButton = ({ isClockRunning, currentTime, onClick }) => {
                 fontSize: '16px',
             }}
         >
-            {isClockRunning ? (
+            {/* {isClockRunning ? (
                 <LogoutIcon style={{ color: 'white', marginRight: '80px' }} />
-            ) : (
-                <LoginIcon style={{ color: 'white', marginRight: '80px' }} />
-            )}
+            ) : ( */}
+                {/* <LoginIcon style={{ color: 'white', marginRight: '80px' }} /> */}
+            {/* )} */}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
                 <span style={{ color: 'white', fontSize: '20px', fontWeight: 'bold' }}>
                     {isClockRunning ? 'דווח שעת יציאה' : 'דווח שעת  כניסה'}

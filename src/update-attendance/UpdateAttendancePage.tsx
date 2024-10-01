@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import TimeButton from './components/TimeButton'; 
-import TimeInput from './components/TimeInput'; 
+import React, { useState, useEffect, ChangeEvent } from 'react';
+import TimeButton from './components/TimeButton';
+import TimeInput from './components/TimeInput';
+import { DataToSendType } from '../types/updateAttendanceTypes'
 
-const UpdateAttendancePage = () => {
-    const [currentTime, setCurrentTime] = useState(new Date());
-    const [isClockRunning, setIsClockRunning] = useState(false);
-    const [showInput, setShowInput] = useState(false); 
-    const [startTime, setStartTime] = useState(null); 
-    const [userInput, setUserInput] = useState(''); 
-    const [inputError, setInputError] = useState(false); 
+
+const UpdateAttendancePage: React.FC = () => {
+    const [currentTime, setCurrentTime] = useState<Date>(new Date());
+    const [isClockRunning, setIsClockRunning] = useState<boolean>(false);
+    const [showInput, setShowInput] = useState<boolean>(true);
+    const [startTime, setStartTime] = useState<Date | null>(null);
+    const [userInput, setUserInput] = useState<string>('');
+    const [inputError, setInputError] = useState<boolean>(false);
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -18,8 +20,8 @@ const UpdateAttendancePage = () => {
         return () => clearInterval(timer);
     }, []);
 
-    const sendTimeToServer = (time, duration = null, userText = '') => {
-        const dataToSend = {
+    const sendTimeToServer = (time: Date, duration?: number | null, userText: string = '') => {
+        const dataToSend: DataToSendType = {
             time: time.toLocaleTimeString(),
             date: time.toLocaleDateString(),
         };
@@ -33,41 +35,37 @@ const UpdateAttendancePage = () => {
         }
 
         console.log("שולח לשרת:", dataToSend);
-
     };
 
     const handleStartClick = () => {
         setIsClockRunning(true);
-        setStartTime(currentTime); 
-        sendTimeToServer(currentTime); 
-        setShowInput(true); 
-        setInputError(false); 
+        setStartTime(currentTime);
+        sendTimeToServer(currentTime);
+        setShowInput(true);
+        setInputError(false);
     };
 
     const handleEndClick = () => {
         if (userInput.length < 10) {
-            setInputError(true); 
+            setInputError(true);
             return;
         }
 
         setIsClockRunning(false);
-        sendTimeToServer(currentTime, null, userInput); 
+        sendTimeToServer(currentTime, null, userInput);
 
-        
         if (startTime) {
-            const duration = Math.round((currentTime - startTime) / 1000); 
-            sendTimeToServer(currentTime, duration, userInput); 
+            const duration = Math.round((currentTime.getTime() - startTime.getTime()) / 1000);
+            sendTimeToServer(currentTime, duration, userInput);
         }
 
-        
-        setUserInput(''); 
-
-        setShowInput(false); 
+        setUserInput('');
+        setShowInput(false);
     };
 
-    const handleInputChange = (e) => {
-        setUserInput(e.target.value);
-        if (e.target.value.length >= 10) {
+    const handleInputChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+        setUserInput(event.target.value);
+        if (event.target.value.length >= 10) {
             setInputError(false);
         }
     };
@@ -81,7 +79,7 @@ const UpdateAttendancePage = () => {
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'flex-start',
-                paddingTop: '50px' 
+                paddingTop: '50px'
             }}
         >
             <h1 style={{ color: 'white', marginBottom: '20px' }}>דווח שעות עבודה</h1>
@@ -110,4 +108,7 @@ const UpdateAttendancePage = () => {
     );
 };
 
+
 export default UpdateAttendancePage;
+
+
