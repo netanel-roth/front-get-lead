@@ -1,3 +1,49 @@
+## rules of work:
+<details>
+    <summary>Working with git steps:</summary>
+    <ul>
+        <li> GIT CLONE https://github.com/LinoyHi/R-Roth.git </li>
+        <li> git checkout development</li>
+        <li> git branch (name your branch) </li>
+        <li> git checkout (your branch name) </li>
+        <li> work on your branch </li>
+        <li> git add .</li>
+        <li> git commit -m "(write here shortly what did you do)" </li>
+        <li> git checkout development </li>
+        <li> git pull </li>
+        <li> git checkout (your branch name) </li>
+        <li> git merge development </li>
+        <li> if there were no errors last command is: git push -u origin (your branch name) </li>
+    </ul>
+</details>
+
+<details>
+    <summary>Working with git steps for Server work:</summary>
+    <ul>
+        <li> GIT CLONE https://github.com/LinoyHi/R-Roth.git </li>
+        <li> git checkout development</li>
+        <li> git checkout server</li>
+        <li> git branch (name your branch) </li>
+        <li> git checkout (your branch name) </li>
+        <li> work on your branch </li>
+        <li> git add .</li>
+        <li> git commit -m "(write here shortly what did you do)" </li>
+        <li> git checkout server </li>
+        <li> git pull </li>
+        <li> git checkout (your branch name) </li>
+        <li> git merge server </li>
+        <li> if there were no errors / after error fix last command is: git push -u origin (your branch name) </li>
+        <li> when server is ready to be used in development: git checkout development </li>
+        <li> git pull </li>
+        <li> git checkout server </li>
+        <li> git merge development </li>
+        <li> if there were no errors / after error fix last command is: git push -u origin server </li>
+    </ul>
+</details>
+
+- please choose as accurate as possible branch name 
+- commit comments are important
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

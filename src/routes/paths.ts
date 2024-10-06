@@ -1,5 +1,6 @@
 const paths = {
-    LOGIN: 'login',
+    LOGIN:'login',
+    TIMER: 'TimeLogger',
     UPDATE_ATTENDANCE:'updateAttendance'
 }
 
