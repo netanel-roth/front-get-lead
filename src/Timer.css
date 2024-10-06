@@ -1,0 +1,70 @@
+/* סגנון לקונטיינר הראשי */
+.container {
+    background-color: #3D4873;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 50px;
+}
+
+/* סגנון לטקסט הראשי */
+h1 {
+    color: white;
+    margin-bottom: 20px;
+}
+
+/* סגנון לתיבת קלט */
+.input-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* סגנון לשגיאה בתיבת הקלט */
+.input-error {
+    color: white;
+    margin-bottom: 10px;
+    border: 2px solid red;
+    padding: 5px;
+}
+
+/* סגנון במצב שאין שגיאה */
+.input-no-error {
+    color: white;
+    margin-bottom: 10px;
+}
+
+/* סגנון לכפתור */
+.time-button {
+    background-color: #F5A777;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+/* שינוי סגנון בעת מעבר עכבר */
+.time-button:hover {
+    background-color: white;
+    color: #F5A777;
+    border: 1px solid #F5A777;
+}
+
+/* סגנון לשדה הקלט */
+.time-input {
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #3D4873;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* סגנון לרוחב ומבנה האייקונים בכפתורים */
+.time-button .icon {
+    margin-right: 10px;
+    vertical-align: middle;
+}

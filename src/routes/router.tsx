@@ -9,7 +9,7 @@ export const router = createBrowserRouter(
     [
         {
             path: '',
-            element: <Navigate to={paths.LOGIN} />
+            element: <Navigate to={paths.TIMER} />
         },
         {
             path: paths.LOGIN,
