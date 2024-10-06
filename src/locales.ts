@@ -9,9 +9,3 @@ export const messages = {
     }
    
 }
-
-export const colors = {
-    WHITE_COLOR: '#ffffff',
-    BLUE_COLOR: '#3D4873',
-    ORANGE_COLOR: '#F5A777'
-}
