@@ -9,16 +9,41 @@
 .p-component {
   direction: rtl;
 }
+
 body {
-  height: 100vh; 
+  height: 100vh;
   margin: 0;
   font-family: 'Rubik', sans-serif;
   background-color: #3D4873;
   direction: rtl;
   text-align: right;
   display: flex;
-  justify-content: center; 
-  align-items: center; 
+  justify-content: center;
+  align-items: center;
+}
+
+.bg-blue-color {
+  background-color: #3D4873;
+}
+
+.bg-white-color {
+  background-color: #ffffff;
+}
+
+.bg-orange-color {
+  background-color: #F5A777;
+}
+
+.c-blue-color {
+  color: #3D4873;
+}
+
+.c-white-color {
+  color: #ffffff;
+}
+
+.c-orange-color {
+  color: #F5A777;
 }
 
 .App-logo {
@@ -31,6 +56,7 @@ body {
     animation: App-logo-spin infinite 20s linear;
   }
 }
+
 
 .App-header {
   background-color: #282c34;

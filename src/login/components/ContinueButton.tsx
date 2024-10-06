@@ -1,5 +1,6 @@
 import { Button } from 'primereact/button';
-import '../../css/loginStyles.css'
+import '../../css/login.css';
+import '../../css/App.css';
 import { OnLoginProps } from '../../types/loginTypes';
 
 
@@ -9,7 +10,7 @@ const ContinueButton = (props:OnLoginProps) => {
         onLogin();
     }
     return (
-        <Button label="המשך" className="continue-button" onClick={handleClick}/>
+        <Button label="המשך" className="continue-button bg-orange-color c-white-color" onClick={handleClick}/>
     )
 }
 

@@ -1,6 +1,6 @@
 import { InputText } from 'primereact/inputtext';
 import { ChangeEvent } from 'react';
-import '../../css/loginStyles.css'
+import '../../css/login.css'
 import { messages } from '../../locales';
 import { ChangeValueProps } from '../../types/loginTypes';
 

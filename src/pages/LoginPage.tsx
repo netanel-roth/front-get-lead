@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import {useNavigate} from 'react-router-dom'
 import 'primereact/resources/themes/lara-light-blue/theme.css'; 
 import { messages } from '../locales';
-import ContinueButton from './components/ContinueButton';
-import EmailInput from './components/EmailInput';
-import PasswordInput from './components/PasswordInput';
-import '../css/loginStyles.css'
+import ContinueButton from '../login/components/ContinueButton';
+import EmailInput from '../login/components/EmailInput';
+import PasswordInput from '../login/components/PasswordInput';
+import '../css/login.css'
 import paths from '../routes/paths';
 
 

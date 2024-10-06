@@ -1,7 +1,7 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom'
 import paths from './paths'
-import LoginPage from '../login/LoginPage'
-import UpdateAttendancePage from '../update-attendance/UpdateAttendancePage'
+import LoginPage from '../pages/LoginPage'
+import UpdateAttendancePage from '../pages/UpdateAttendancePage'
 
 
 
