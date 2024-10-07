@@ -1,0 +1,40 @@
+.time-table-container {
+    text-align: center;
+}
+.fixed-fields {
+    display: flex;
+    justify-content: space-between; 
+    margin: 16px auto; 
+    padding: 8px; 
+    background-color: #F5A777; 
+    border: 1px solid #ccc; 
+    width: 320px; 
+    border-radius: 10px;
+}
+
+.fixed-field {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px; 
+}
+
+.icon-container {
+    display: flex;
+    justify-content: flex-end; 
+    width: 100%;
+}
+
+.icon-calendar {
+    margin-right: 50px; 
+    margin-left: auto; 
+}
+
+.icon {
+    font-size: 2em;
+    color: white; 
+}
+
+.logs-container {
+    margin-top: 20px;
+}

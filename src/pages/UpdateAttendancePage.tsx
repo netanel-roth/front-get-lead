@@ -1,16 +1,22 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import TimeButton from '../update-attendance/components/TimeButton';
 import TimeInput from '../update-attendance/components/TimeInput';
-import { DataToSendType } from '../types/updateAttendanceTypes'
+import TimeTable from '../update-attendance/components/TimeTable';
+import '../css/timer.css';
+import '../css/App.css'
+import { messages } from '../locales';
+import { LogEntry } from '../types/updateAttendanceTypes';
 
 
-const UpdateAttendancePage: React.FC = () => {
-    const [currentTime, setCurrentTime] = useState<Date>(new Date());
-    const [isClockRunning, setIsClockRunning] = useState<boolean>(false);
-    const [showInput, setShowInput] = useState<boolean>(false);
+
+const UpdateAttendancePage = () => {
+    const [currentTime, setCurrentTime] = useState(new Date());
+    const [isClockRunning, setIsClockRunning] = useState(false);
+    const [showInput, setShowInput] = useState(false);
     const [startTime, setStartTime] = useState<Date | null>(null);
-    const [userInput, setUserInput] = useState<string>('');
-    const [inputError, setInputError] = useState<boolean>(false);
+    const [userInput, setUserInput] = useState('');
+    const [inputError, setInputError] = useState(false);
+    const [logs, setLogs] = useState<LogEntry[]>([]);
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -20,21 +26,32 @@ const UpdateAttendancePage: React.FC = () => {
         return () => clearInterval(timer);
     }, []);
 
-    const sendTimeToServer = (time: Date, duration?: number | null, userText: string = '') => {
-        const dataToSend: DataToSendType = {
+    const sendTimeToServer = async (time: Date, duration: number | null = null, userText = '') => {
+        const dataToSend: LogEntry = {
             time: time.toLocaleTimeString(),
             date: time.toLocaleDateString(),
+            duration: duration ? `${duration} שניות` : '',
+            userText: userText,
         };
 
-        if (duration) {
-            dataToSend.duration = duration;
-        }
-
-        if (userText) {
-            dataToSend.userText = userText;
-        }
-
         console.log("שולח לשרת:", dataToSend);
+
+        try {
+            const response = await fetch('/api/logs', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dataToSend),
+            });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const newLog: LogEntry = await response.json();
+            setLogs(prevLogs => [...prevLogs, newLog]);
+        } catch (error) {
+            console.error("Error sending data to server:", error);
+        }
     };
 
     const handleStartClick = () => {
@@ -50,50 +67,30 @@ const UpdateAttendancePage: React.FC = () => {
             setInputError(true);
             return;
         }
+        //     setIsClockRunning(false);
+        //     const endTime: Date = new Date();
+        //     const duration: number = Math.round((endTime.getTime() - (startTime?.getTime() || 0)) / 1000);
+        //     sendTimeToServer(endTime, duration, userInput);
 
-        setIsClockRunning(false);
-        sendTimeToServer(currentTime, null, userInput);
-
-        if (startTime) {
-            const duration = Math.round((currentTime.getTime() - startTime.getTime()) / 1000);
-            sendTimeToServer(currentTime, duration, userInput);
-        }
-
-        setUserInput('');
-        setShowInput(false);
+        //     setUserInput('');
+        //     setShowInput(false);
     };
 
-    const handleInputChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-        setUserInput(event.target.value);
-        if (event.target.value.length >= 10) {
+    const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        setUserInput(e.target.value);
+        if (e.target.value.length >= 10) {
             setInputError(false);
         }
     };
 
     return (
-        <div
-            style={{
-                backgroundColor: '#3D4873',
-                height: '100vh',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'flex-start',
-                paddingTop: '50px'
-            }}
-        >
-            <h1 style={{ color: 'white', marginBottom: '20px' }}>דווח שעות עבודה</h1>
+        <div className="container">
+            <h1 className="title"></h1>
+
             {showInput && (
-                <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-                    <div
-                        style={{
-                            color: 'white',
-                            marginBottom: '10px',
-                            border: inputError ? '2px solid red' : 'none',
-                            padding: inputError ? '5px' : '0'
-                        }}
-                    >
-                        אנא הכנס לפחות 10 תווים המסבירים מה ביצעת היום
+                <div className="input-container">
+                    <div className={inputError ? 'input-error' : 'input-normal'}>
+                        {messages.timer.ENTER_REPORT_MESSAGE}
                     </div>
                     <TimeInput value={userInput} onChange={handleInputChange} />
                 </div>
@@ -104,11 +101,10 @@ const UpdateAttendancePage: React.FC = () => {
                 currentTime={currentTime}
                 onClick={isClockRunning ? handleEndClick : handleStartClick}
             />
+
+            <TimeTable />
         </div>
     );
 };
 
-
 export default UpdateAttendancePage;
-
-

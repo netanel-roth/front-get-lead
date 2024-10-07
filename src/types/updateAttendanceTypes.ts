@@ -14,6 +14,18 @@ export type InputAttendanceProps = {
 export type DataToSendType = {
     time: string;
     date: string;
-    duration?: number | null;
+    duration?: string | null;
     userText?: string;
+};
+
+export type LogEntry = {
+    time: string;
+    date: string;
+    duration: string;
+    userText: string;
+};
+
+export type MonthlyTimeData = {
+    date: string;   
+    duration: number | string; 
 }

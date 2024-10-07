@@ -1,0 +1,116 @@
+
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.tab-button {
+    padding: 10px 20px;
+    margin: 0 5px;
+    /* background-color: #F5A777;
+    color: white; */
+    border: none;
+    cursor: pointer;
+}
+
+.active-tab {
+    background-color: #3D4873;
+    color: white;
+    border-bottom: 2px solid #F5A777;
+}
+
+
+
+.container {
+    background-color: #3D4873;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 50px;
+}
+
+.title {
+    color: white;
+    margin-bottom: 20px;
+}
+
+.input-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.input-error {
+    color: white;
+    margin-bottom: 10px;
+    border: 2px solid red;
+    padding: 5px;
+}
+
+.input-normal {
+    color: white;
+    margin-bottom: 10px;
+}
+
+.duration-display {
+    color: white;
+    margin-top: 20px;
+}
+
+.textarea {
+    width: 300px;
+    height: 100px;
+    border-radius: 5px;
+    padding: 10px;
+    border: 1px solid #3D4873;
+    margin-top: 20px;
+}
+
+.time-button {
+    background-color: #F5A777;
+    color: white;
+    width: 320px;
+    height: 100px;
+    border: none;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+
+
+.text-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.main-text {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.date-time {
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+.time {
+    font-weight: bold;
+}
+
+.separator {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.date {
+    color: white;
+}

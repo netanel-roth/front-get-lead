@@ -1,21 +1,17 @@
 import React from 'react';
-import { InputAttendanceProps } from '../../types/updateAttendanceTypes'
+import '../../css/timer.css'; 
 
+interface TimeInputProps {
+    value: string;
+    onChange: React.ChangeEventHandler<HTMLTextAreaElement>;
+}
 
-const TimeInput = (props: InputAttendanceProps) => {
-    const { value, onChange } = props;
+const TimeInput: React.FC<TimeInputProps> = ({ value, onChange }) => {
     return (
         <textarea
             value={value}
             onChange={onChange}
-            style={{
-                width: '300px',
-                height: '100px',
-                borderRadius: '5px',
-                padding: '10px',
-                border: '1px solid #3D4873',
-                marginTop: '20px'
-            }}
+            className="textarea" 
         />
     );
 };
