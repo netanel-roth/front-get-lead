@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 import 'primereact/resources/themes/lara-light-blue/theme.css';
 import { messages } from '../DAL/locales';
 import ContinueButton from '../Components/Login/ContinueButton';
 import EmailInput from '../Components/Login/EmailInput';
 import PasswordInput from '../Components/Login/PasswordInput';
-import '../globalCSS/login.css'
+import '../globalCSS/login.css';
 import { useAppDispatch, useAppSelector } from '../Redux/hooks';
 import { loginUser } from '../Redux/authSlice';
 import { LoginType } from '../types/loginTypes';
 import PhoneInput from '../Components/Login/PhoneInput';
-
+import axios from '../Axios/axios';
 
 const LoginPage: React.FC = () => {
     const navigate = useNavigate();
@@ -21,30 +21,35 @@ const LoginPage: React.FC = () => {
     // מתחת לשורה זו יצרתי שני מחסני נתונים קטנים לצורך קריאה פשוטה יותר ושינוי קל יותר במידה ונצטרך להחליף שמות לאייקונים בתיקייה
     const blueIcons = { call: `${currentURL}/assets/phone-blue.svg`, SMS: `${currentURL}/assets/Icon-awesome-sms.svg`, Email: `${currentURL}/assets/mail-icon-blue.svg` }
     const whiteIcons = { call: `${currentURL}/assets/phone-icon.svg`, SMS: `${currentURL}/assets/SMS-icon-white.svg`, Email: `${currentURL}/assets/mail-icon.svg` }
-
-    //הגדרה ראשית של האייקונים:
     const [Icons, setIcons] = useState({ ...whiteIcons, Email: blueIcons.Email })
-
-    //הערה שנכניס לה תוכן במידה והלקוח מנסה להתחבר בלי למלא פרטים
     const [errorM, seterrorM] = useState('')
-
-    //מאפשר שליחת פעולות לסטייט הראשי של האתר
     const dispatch = useAppDispatch();
-
     const { isLoading, redirectUrl } = useAppSelector((state) => state.auth); // קבלת ערכים מהסטייט המרכזי
-
-    // הגדרת הלקוח
+    const [showPasswordInput, setShowPasswordInput] = useState(false);
     const setUser = (e: React.ChangeEvent<HTMLInputElement>) => {
         const user: any = { ...userData }
         user[e.target.id] = e.target.value
-        console.log(e.target.id)
         setuserData(user)
     }
 
-    // פונקציה של לחצן המשך
+    const handleSendPassword = async () => {
+        if (userData.email || userData.phone) {
+            try {
+                //קוד שפונה לאוריגמי וגורם לשליחת קוד אימות למשתמש
+                setShowPasswordInput(true);
+                seterrorM('');
+            } catch (error) {
+                seterrorM(messages.Error.WRONG_INPUT);
+            }
+        } else {
+            seterrorM(messages.Error.WRONG_INPUT);
+        }
+    };
+
     const handleLogin = () => {
-        if ((userData.email || userData.phone)&&userData.password) {
-            dispatch(loginUser({ ...userData, loginType: loginType }));
+        if ((userData.email || userData.phone) && userData.password) {
+            const identifier = loginType === 'Email' ? userData.email : userData.phone
+            dispatch(loginUser({ identifier: identifier, identifierType: loginType, password: userData.password }));
             seterrorM('')
             navigate('/details')
         }
@@ -63,7 +68,6 @@ const LoginPage: React.FC = () => {
         icons[type] = blueIcons[type]
         setIcons(icons)
     }
-
 
     const offFocusType = (type: LoginType) => {
         if (loginType !== type) {
@@ -106,12 +110,17 @@ const LoginPage: React.FC = () => {
                 <EmailInput value={userData.email} onChangeValue={setUser} /> :
                 <PhoneInput value={userData.phone} onChangeValue={setUser} />
             }
-            <PasswordInput value={userData.password} onChangeValue={setUser} />
-            <ContinueButton onLogin={handleLogin} />
+
+            {!showPasswordInput ? (
+                <ContinueButton onLogin={handleSendPassword} />
+            ) : (
+                <>
+                    <PasswordInput value={userData.password} onChangeValue={setUser} />
+                    <ContinueButton onLogin={handleLogin} />
+                </>
+            )}
         </div>
     );
 };
 
-
 export default LoginPage;
-

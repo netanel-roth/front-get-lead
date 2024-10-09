@@ -21,17 +21,19 @@ const initialState: AuthState = {
 
 // Define the login async thunk with types
 export const loginUser = createAsyncThunk(
-  'auth/loginUser',
-  async ({ email, phone, loginType }: { email: string; phone: string; loginType: string }, { rejectWithValue }) => {
+  'auth/login',
+  async ({ identifier, identifierType, password }: { identifier: string; identifierType: string; password: string }, { rejectWithValue }) => {
     try {
-      const response = await axios.post('/api/login', {
-        form_mode: 'login',
-        login_type: loginType,
-        email_id: email,
-        phone: phone,
+      console.log("identifier: "+identifier+"idenifierType: "+identifierType+"password: "+password)
+      const response = await axios.post('/auth/login', {
+        identifierType: identifierType,
+        identifier: identifier,
+        password: password,
       });
+      console.log("token: "+response.data.token)
       return response.data;
     } catch (error: any) {
+      console.log(error)
       return rejectWithValue(error.response.data);
     }
   }

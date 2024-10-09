@@ -7,4 +7,4 @@ export type OnLoginProps={
     onLogin:() => void;
 }
 
-export type LoginType = 'Email' | 'SMS' | 'call'; // שפת טייפסקריפט דורשת הגדרת טייפים ולכן הגדרתי את טייפ דרכי הכניסה
+export type LoginType = 'Email' | 'SMS' | 'call'; 

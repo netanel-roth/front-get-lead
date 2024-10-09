@@ -6,7 +6,7 @@ export const messages = {
         CONTINUE_MESSAGE:'המשך',
         SEND_EMAIL_MESSAGE:'יישלח לך קוד אימות',
         TO_MAIL:'למייל',
-        CHOOSE_LOGIN_TYPE: '?איך לשלוח לך קוד אימות',
+        CHOOSE_LOGIN_TYPE: 'איך לשלוח לך קוד אימות?',
         MAIL: 'מייל',
         TO_SMS: 'SMS לטלפון',
         PHONE: 'טלפון',
