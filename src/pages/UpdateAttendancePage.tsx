@@ -1,15 +1,14 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
-import TimeButton from '../update-attendance/components/TimeButton';
-import TimeInput from '../update-attendance/components/TimeInput';
-import TimeTable from '../update-attendance/components/TimeTable';
-import '../css/timer.css';
-import '../css/App.css'
-import { messages } from '../locales';
+import TimeButton from '../Components/Attendence/TimeButton';
+import TimeInput from '../Components/Attendence/TimeInput';
+import TimeTable from '../Components/Attendence/TimeTable';
+import '../Components/Attendence/timer.css';
+import { messages } from '../DAL/locales';
 import { LogEntry } from '../types/updateAttendanceTypes';
 
 
 
-const UpdateAttendancePage = () => {
+const UpdateAttendancePage: React.FC = () => {
     const [currentTime, setCurrentTime] = useState(new Date());
     const [isClockRunning, setIsClockRunning] = useState(false);
     const [showInput, setShowInput] = useState(false);

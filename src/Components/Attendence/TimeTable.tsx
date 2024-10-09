@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
-import '../../css/table.css';
-import '../../css/App.css'
+import './table.css';
 import 'primeicons/primeicons.css';
 import { LogEntry, MonthlyTimeData } from '../../types/updateAttendanceTypes';
-import { messages } from '../../locales';
+import { messages } from '../../DAL/locales';
 import { TabView, TabPanel } from 'primereact/tabview'; 
 
 const TimeTable = () => {

@@ -1,7 +1,6 @@
 import React from 'react';
 // import LoginIcon from '@mui/icons-material/Login';
 // import LogoutIcon from '@mui/icons-material/Logout';
-import '../../css/timer.css';
 import { ButtonAttendanceProps } from '../../types/updateAttendanceTypes';
 
 const TimeButton = (props: ButtonAttendanceProps) => {

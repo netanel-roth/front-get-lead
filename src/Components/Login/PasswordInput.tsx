@@ -1,14 +1,14 @@
 import { Password } from 'primereact/password';
 import { ChangeEvent } from 'react';
-import '../../css/login.css'
-import { messages } from '../../locales';
+import { messages } from '../../DAL/locales';
 import { ChangeValueProps } from '../../types/loginTypes';
 
 
 const PasswordInput = (props: ChangeValueProps) => {
     const { value, onChangeValue } = props;
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        onChangeValue(event.target.value)
+        event.target.id= 'password'
+        onChangeValue(event)
     }
 
     return (

@@ -1,7 +1,6 @@
 import { InputText } from 'primereact/inputtext';
 import { ChangeEvent } from 'react';
-import '../../css/login.css'
-import { messages } from '../../locales';
+import { messages } from '../../DAL/locales';
 import { ChangeValueProps } from '../../types/loginTypes';
 
 
@@ -9,10 +8,11 @@ const EmailInput = (props: ChangeValueProps) => {
     const { value, onChangeValue } = props;
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        onChangeValue(event.target.value)
+        onChangeValue(event)
     }
     return (
         <InputText 
+            id="email"
             className='input'
             type="email"
             value={value}

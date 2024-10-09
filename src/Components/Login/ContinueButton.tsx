@@ -1,6 +1,4 @@
 import { Button } from 'primereact/button';
-import '../../css/login.css';
-import '../../css/App.css';
 import { OnLoginProps } from '../../types/loginTypes';
 
 
