@@ -8,3 +8,11 @@ export type OnLoginProps={
 }
 
 export type LoginType = 'Email' | 'SMS' | 'call'; 
+
+export type UserType={
+   id:number|undefined;
+   firstName:string;
+   lastName:string;
+   phone:string;
+   email:string;
+}

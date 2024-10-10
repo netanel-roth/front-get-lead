@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import axios from '../Axios/axios';
+import { UserType } from '../types/loginTypes';
+import { RootState } from './store';
 
 // Define the state interface
 interface AuthState {
@@ -8,7 +10,10 @@ interface AuthState {
   error: string | null;
   otpSent: boolean;
   redirectUrl: string | null;
+  token: string | null;
+  user: UserType | null;
 }
+
 
 // Define initial state
 const initialState: AuthState = {
@@ -17,6 +22,8 @@ const initialState: AuthState = {
   error: null,
   otpSent: false,
   redirectUrl: null,
+  token: null,
+  user: null,
 };
 
 // Define the login async thunk with types
@@ -24,13 +31,13 @@ export const loginUser = createAsyncThunk(
   'auth/login',
   async ({ identifier, identifierType, password }: { identifier: string; identifierType: string; password: string }, { rejectWithValue }) => {
     try {
-      console.log("identifier: "+identifier+"idenifierType: "+identifierType+"password: "+password)
       const response = await axios.post('/auth/login', {
         identifierType: identifierType,
         identifier: identifier,
         password: password,
       });
-      console.log("token: "+response.data.token)
+      console.log("response: " + JSON.stringify(response.data))
+
       return response.data;
     } catch (error: any) {
       console.log(error)
@@ -48,11 +55,11 @@ const authSlice = createSlice({
       state.isLoggedIn = false;
       state.error = null;
       state.redirectUrl = null;
+      state.token = null;
     },
   },
   extraReducers: (builder) => {
     builder
-      // Login reducer
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -60,7 +67,15 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action: PayloadAction<any>) => {
         state.isLoading = false;
         if (action.payload.status === 'success') {
-          state.otpSent = true;
+          state.isLoggedIn = true;
+          state.token = action.payload.token;
+          state.user = {
+            id: action.payload.data.user.id,
+            firstName: action.payload.data.user.firstName,
+            lastName: action.payload.data.user.lastName,
+            email: action.payload.data.user.email,
+            phone: action.payload.data.user.phone,
+          };
         } else {
           state.error = action.payload.message;
         }
@@ -72,5 +87,6 @@ const authSlice = createSlice({
   },
 });
 
+export const selectUser = (state: RootState) => state.auth.user;
 export const { logout } = authSlice.actions;
 export default authSlice.reducer;

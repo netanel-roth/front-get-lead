@@ -29,3 +29,17 @@ export type MonthlyTimeData = {
     date: string;   
     duration: number | string; 
 }
+
+export type AttendanceType = {
+    id?: number;
+    userId: number|undefined;
+    attendanceDate: string; 
+    checkInTime: string;  
+    checkOutTime: string; 
+    overallTime: number; 
+    userNote:string;
+  };
+
+  export type TimeTableProps = {
+    attendances: AttendanceType[];
+};

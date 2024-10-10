@@ -4,7 +4,12 @@ import TimeInput from '../Components/Attendence/TimeInput';
 import TimeTable from '../Components/Attendence/TimeTable';
 import '../Components/Attendence/timer.css';
 import { messages } from '../DAL/locales';
-import { LogEntry } from '../types/updateAttendanceTypes';
+import { AttendanceType, LogEntry } from '../types/updateAttendanceTypes';
+import { useAppDispatch, useAppSelector } from '../Redux/hooks';
+import { useDispatch } from 'react-redux';
+import { addAttendance, fetchAttendance } from '../Redux/attendanceSlice';
+import { selectUser } from '../Redux/authSlice';
+import { UserType } from '../types/loginTypes';
 
 
 
@@ -15,7 +20,9 @@ const UpdateAttendancePage: React.FC = () => {
     const [startTime, setStartTime] = useState<Date | null>(null);
     const [userInput, setUserInput] = useState('');
     const [inputError, setInputError] = useState(false);
-    const [logs, setLogs] = useState<LogEntry[]>([]);
+    const { attendances, isLoading, error } = useAppSelector((state) => state.attendance);
+    const user: UserType | null = useAppSelector(selectUser);
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -25,38 +32,21 @@ const UpdateAttendancePage: React.FC = () => {
         return () => clearInterval(timer);
     }, []);
 
-    const sendTimeToServer = async (time: Date, duration: number | null = null, userText = '') => {
-        const dataToSend: LogEntry = {
-            time: time.toLocaleTimeString(),
-            date: time.toLocaleDateString(),
-            duration: duration ? `${duration} שניות` : '',
-            userText: userText,
-        };
+    useEffect(() => {
+        dispatch(fetchAttendance(user?.id));
+    }, [dispatch, user?.id]);
 
-        console.log("שולח לשרת:", dataToSend);
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
 
-        try {
-            const response = await fetch('/api/logs', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(dataToSend),
-            });
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const newLog: LogEntry = await response.json();
-            setLogs(prevLogs => [...prevLogs, newLog]);
-        } catch (error) {
-            console.error("Error sending data to server:", error);
-        }
-    };
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
 
     const handleStartClick = () => {
         setIsClockRunning(true);
         setStartTime(currentTime);
-        sendTimeToServer(currentTime);
         setShowInput(true);
         setInputError(false);
     };
@@ -66,13 +56,35 @@ const UpdateAttendancePage: React.FC = () => {
             setInputError(true);
             return;
         }
-        //     setIsClockRunning(false);
-        //     const endTime: Date = new Date();
-        //     const duration: number = Math.round((endTime.getTime() - (startTime?.getTime() || 0)) / 1000);
-        //     sendTimeToServer(endTime, duration, userInput);
+        //קריאה לשליחה לנסט
+        sendAttendanceToNestServer()
+        setIsClockRunning(false);
+        setUserInput('');
+        setShowInput(false);
+    };
+    const sendAttendanceToNestServer = async () => {
+        if (!startTime || userInput.length < 10) {
+            setInputError(true);
+            return;
+        }
 
-        //     setUserInput('');
-        //     setShowInput(false);
+        const endTime: Date = new Date();
+        const duration: number = Math.round((endTime.getTime() - (startTime.getTime())) / 1000);
+
+        try {
+            const newAttendance: AttendanceType = {
+                userId: user?.id,
+                attendanceDate: new Date(Date.UTC(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate())).toISOString().split('T')[0],
+                checkInTime: startTime.toLocaleTimeString(),
+                checkOutTime: endTime.toLocaleTimeString(),
+                overallTime: duration / 3600,
+                userNote: userInput
+            };
+            await dispatch(addAttendance(newAttendance));
+
+        } catch (error) {
+            console.error("Error adding attendance:", error);
+        }
     };
 
     const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -101,7 +113,7 @@ const UpdateAttendancePage: React.FC = () => {
                 onClick={isClockRunning ? handleEndClick : handleStartClick}
             />
 
-            <TimeTable />
+            <TimeTable attendances={attendances} />
         </div>
     );
 };

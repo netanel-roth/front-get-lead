@@ -25,6 +25,7 @@ const LoginPage: React.FC = () => {
     const [errorM, seterrorM] = useState('')
     const dispatch = useAppDispatch();
     const { isLoading, redirectUrl } = useAppSelector((state) => state.auth); // קבלת ערכים מהסטייט המרכזי
+    
     const [showPasswordInput, setShowPasswordInput] = useState(false);
     const setUser = (e: React.ChangeEvent<HTMLInputElement>) => {
         const user: any = { ...userData }
@@ -46,15 +47,33 @@ const LoginPage: React.FC = () => {
         }
     };
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
         if ((userData.email || userData.phone) && userData.password) {
-            const identifier = loginType === 'Email' ? userData.email : userData.phone
-            dispatch(loginUser({ identifier: identifier, identifierType: loginType, password: userData.password }));
-            seterrorM('')
-            navigate('/details')
-        }
-        else {
-            seterrorM(messages.Error.WRONG_INPUT);
+            const identifier = loginType === 'Email' ? userData.email : userData.phone;
+            
+            try {
+                const resultAction = await dispatch(
+                    loginUser({
+                        identifier: identifier,
+                        identifierType: loginType,
+                        password: userData.password
+                    })
+                );
+    
+                if (loginUser.fulfilled.match(resultAction)) {
+                    const token = resultAction.payload.data.token; 
+                    localStorage.setItem('token', token); 
+                    seterrorM(''); 
+                    navigate('/details'); 
+                } else {
+                    console.log('Login failed:', resultAction.payload);
+                    seterrorM(messages.Error.WRONG_INPUT); 
+                }
+            } catch (error) {
+                console.log('An error occurred:', error);
+            }
+        } else {
+            seterrorM(messages.Error.WRONG_INPUT); 
         }
     };
 
