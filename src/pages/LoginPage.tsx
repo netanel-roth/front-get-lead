@@ -154,16 +154,16 @@ const LoginPage: React.FC = () => {
             <div className="input-button-wrapper">
                 {!showPasswordInput ? (
                     loginType === 'Email' ? (
-                        <div className="input-container">
+                        <div className="login-input-container">
                             <EmailInput value={userData.email} onChangeValue={setUser} />
                         </div>
                     ) : (
-                        <div className="input-container">
+                        <div className="login-input-container">
                             <PhoneInput value={userData.phone} onChangeValue={setUser} />
                         </div>
                     )
                 ) : (
-                    <div className="input-container">
+                    <div className="login-input-container">
                         <PasswordInput value={userData.password} onChangeValue={setUser} />
                     </div>
                 )}
@@ -178,3 +178,4 @@ const LoginPage: React.FC = () => {
 };
 
 export default LoginPage;
+

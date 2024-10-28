@@ -23,7 +23,6 @@
 
 
 .container {
-    background-color: #3D4873;
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -33,31 +32,29 @@
 }
 
 .title {
-    color: white;
     margin-bottom: 20px;
 }
 
-.input-container {
+.a-input-container {
     text-align: center;
     margin-bottom: 20px;
+
 }
 
 .input-error {
-    color: white;
     margin-bottom: 10px;
     border: 2px solid red;
     padding: 5px;
 }
 
 .input-normal {
-    color: white;
     margin-bottom: 10px;
 }
 
-.duration-display {
+/* .duration-display {
     color: white;
     margin-top: 20px;
-}
+} */
 
 .textarea {
     width: 300px;
@@ -69,8 +66,6 @@
 }
 
 .time-button {
-    background-color: #F5A777;
-    color: white;
     width: 320px;
     height: 100px;
     border: none;
@@ -91,7 +86,6 @@
 }
 
 .main-text {
-    color: white;
     font-size: 20px;
     font-weight: bold;
 }
@@ -99,7 +93,6 @@
 .date-time {
     display: flex;
     align-items: center;
-    color: white;
 }
 
 .time {
@@ -109,8 +102,4 @@
 .separator {
     margin-left: 5px;
     margin-right: 5px;
-}
-
-.date {
-    color: white;
 }

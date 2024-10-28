@@ -36,9 +36,9 @@ const UpdateAttendancePage: React.FC = () => {
         dispatch(fetchAttendance(user?.id));
     }, [dispatch, user?.id]);
 
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
+    // if (isLoading) {
+    //     return <div>Loading...</div>;
+    // }
 
     if (error) {
         return <div>Error: {error}</div>;
@@ -95,12 +95,12 @@ const UpdateAttendancePage: React.FC = () => {
     };
 
     return (
-        <div className="container">
-            <h1 className="title"></h1>
+        <div className="container bg-blue-color">
+            <h1 className="title c-white-color"></h1>
 
             {showInput && (
-                <div className="input-container">
-                    <div className={inputError ? 'input-error' : 'input-normal'}>
+                <div className="a-input-container">
+                    <div className={inputError ? 'input-error c-white-color' : 'input-normal c-white-color'}>
                         {messages.timer.ENTER_REPORT_MESSAGE}
                     </div>
                     <TimeInput value={userInput} onChange={handleInputChange} />

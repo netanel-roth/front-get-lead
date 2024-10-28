@@ -229,14 +229,14 @@
   cursor: pointer;
   color: gray;
 }
-.input-container {
+.login-input-container {
   display: flex; 
   justify-content: center; 
   align-items: center; 
   width: 100%; 
   height:60px;
   padding: 0; 
-  margin: 0; 
+  margin-bottom: 10px; 
 }
 
 .input,
@@ -268,12 +268,11 @@
     .p-inputtext {
       width: 80%; 
     }
-    .p-password input{
-        width: 120%;
+    .password-input-wrapper{
+        width: 80%;
     }
     .continue-button {
-      width: 100%;
-      height: 40px;
+      width: 80%;
     }
   
     .container {

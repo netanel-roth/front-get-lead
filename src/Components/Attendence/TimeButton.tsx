@@ -7,20 +7,20 @@ const TimeButton = (props: ButtonAttendanceProps) => {
     const { isClockRunning, currentTime, onClick } = props;
     
     return (
-        <button className="time-button" onClick={onClick}>
+        <button className="time-button c-white-color bg-orange-color" onClick={onClick}>
             {/* {isClockRunning ? (
                 <LogoutIcon className="icon" />
             ) : (
                 <LoginIcon className="icon" />
             )} */}
             <div className="text-container">
-                <span className="main-text">
+                <span className="main-text c-white-color">
                     {isClockRunning ? 'דווח שעת יציאה' : 'דווח שעת כניסה'}
                 </span>
-                <div className="date-time">
+                <div className="date-time c-white-color">
                     <span className="time">{currentTime.toLocaleTimeString()}</span>
                     <span className="separator">|</span>
-                    <span className="date">{currentTime.toLocaleDateString()}</span>
+                    <span className="c-white-color">{currentTime.toLocaleDateString()}</span>
                 </div>
             </div>
         </button>
