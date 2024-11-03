@@ -47,10 +47,10 @@
 /* Text styling */
 .button-with-image span {
   position: absolute;
-  bottom: 10px;
+  bottom: 4px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .button-with-image span{

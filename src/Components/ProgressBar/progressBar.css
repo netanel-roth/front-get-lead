@@ -1,0 +1,25 @@
+.progress-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .progress-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .progress {
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    height: 10px;
+    width: 100%;
+  }
+  
+  .progress-fill {
+    background-color: #4caf50;
+    height: 100%;
+    border-radius: 8px;
+  }
+  
