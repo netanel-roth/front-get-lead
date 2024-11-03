@@ -1,12 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './authSlice';
 import attendanceReducer from './attendanceSlice';
+import authReducer from './'
 
 // Create and configure the Redux store
 const store = configureStore({
   reducer: {
     auth: authReducer,  
-    attendance:attendanceReducer
+    attendance:attendanceReducer,
+    form:formReducer
   },
 });
 
