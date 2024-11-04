@@ -4,6 +4,7 @@ import axios from 'axios';
 import Message from '../Message/Messsage';
 import { StructuredChatProps } from '../../types/structuredChat';
 import { RootState } from '../../Redux/store';
+import 'chart.js/auto';  // הוסף את זה בראש הקובץ
 
 const StructuredChat: React.FC<StructuredChatProps> = ({ messages, onMessageSubmit, onProgressUpdate }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
