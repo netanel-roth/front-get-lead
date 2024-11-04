@@ -94,6 +94,7 @@ export const fetchInitialData = createAsyncThunk(
 export const addMessage = createAsyncThunk(
   'form/addMessage',
   async (message: MessageType, { rejectWithValue }) => {
+    // קריאה לשרת להוספת הודעה
     try {
       const response = await axios.post('/api/messages', { message });
       return response.data;
@@ -108,6 +109,9 @@ const formSlice = createSlice({
   name: 'form',
   initialState,
   reducers: {
+    addMessage: (state, action: PayloadAction<MessageType>) => {
+      state.messages.push(action.payload);
+    },
     updatePersonalQuestion: (state:any, action: PayloadAction<{ question: string; answer: string }>) => {
       const { question, answer } = action.payload;
       state.personalData.questions[question] = answer;

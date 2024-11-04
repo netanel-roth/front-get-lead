@@ -58,14 +58,17 @@ const StructuredChat: React.FC<StructuredChatProps> = ({ messages, onMessageSubm
   const handleSubmit = async () => {
     if (input.trim()) {
       onMessageSubmit({ sender: 'user', text: input });
-
+  
       const currentQuestions = questionsByTopic[currentTopic];
-      const currentQuestionInfo = currentQuestions[currentQuestionIndex];
-      await axios.post('/api/saveAnswer', { question: currentQuestionInfo.question, answer: input });
+      // חסר! צריך לחשב את האחוז ולקרוא ל-onProgressUpdate
+      const progress = ((currentQuestionIndex + 1) / currentQuestions.length) * 100;
       
+      // הוספת הקריאה החסרה
+      onProgressUpdate(currentTopic.replace('Data', '') as 'personal' | 'accident' | 'injury', progress);
+  
       setInput('');
       handleProgressUpdate();
-
+  
       if (currentQuestionIndex + 1 < currentQuestions.length) {
         setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
       } else {
@@ -78,7 +81,6 @@ const StructuredChat: React.FC<StructuredChatProps> = ({ messages, onMessageSubm
       }
     }
   };
-
   useEffect(() => {
     askQuestion();
   }, [currentQuestionIndex, currentTopic]);

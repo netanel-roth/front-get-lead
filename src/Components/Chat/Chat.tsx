@@ -6,13 +6,16 @@ import ProgressBar from '../ProgressBar/progressBar';
 import { fetchInitialData ,addMessage, selectMessages,selectPersonalData, selectAccidentData, selectInjuryData} from '../../Redux/formSlice';
 import { RootState,AppDispatch  } from '../../Redux/store';
 import { MessageType } from '../../types/message';
+import { useAppDispatch } from '../../Redux/hooks';
 //import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 
 // קומפוננטת ChatManager המקורית עם עיצוב משופר
 const ChatManager = () => {
+  const dispatch = useAppDispatch();  // במקום useDispatch רגיל
+
   const [currentMode, setCurrentMode] = useState('free');
-  const [messages, setMessages] = useState<MessageType[]>([]);
+  const messages = useSelector((state: RootState) => state.form.messages);
   const [progress, setProgress] = useState({
     free: {
       personal: 0,
@@ -30,7 +33,7 @@ const ChatManager = () => {
   const calculateFreeChatProgress = useCallback(() => {
     const messageCount = messages.length;
     const baseProgress = Math.min((messageCount * 10), 100);
-    
+   
     return {
       personal: baseProgress * 0.8,
       accident: baseProgress * 0.6,
@@ -39,7 +42,7 @@ const ChatManager = () => {
   }, [messages]);
 
   // עדכון התקדמות בשיחה מובנית
-  const handleStructuredProgressUpdate = (topic: any, value: any) => {
+  const handleStructuredProgressUpdate = (topic: 'personal' | 'accident' | 'injury', value: number) => {
     setProgress(prev => ({
       ...prev,
       structured: {
@@ -49,28 +52,40 @@ const ChatManager = () => {
     }));
   };
 
-  const handleMessageSubmit = (newMessage: MessageType) => {
-    setMessages(prev => [...prev, newMessage]);
-    
-    // עדכון התקדמות בשיחה חופשית
-    if (currentMode === 'free') {
-      const newProgress = calculateFreeChatProgress();
-      setProgress(prev => ({
-        ...prev,
-        free: newProgress
-      }));
+  const handleMessageSubmit = async (newMessage: MessageType) => {
+    try {
+            // להחזיר חזרה בעת שרת עובד
+
+      if (currentMode === 'free') {
+        // בשיחה חופשית - שליחה לשרת וקבלת תשובה
+        // const resultAction = await dispatch(addMessage(newMessage));
+        
+        // if (addMessage.fulfilled.match(resultAction)) {
+        //   const aiResponse = resultAction.payload;
+        //   if (aiResponse.text !== 'INITIAL_PROMPT') {
+            // שליחת תשובת ה-AI כהודעה חדשה
+            // await dispatch(addMessage({
+            //   sender: 'system',
+            //   text: aiResponse.text
+            // }));
+          }
+          
+          const newProgress = calculateFreeChatProgress();
+          setProgress(prev => ({
+            ...prev,
+            free: newProgress
+          }));
+        }
+      // } else {
+        // בשיחה מובנית - רק שמירה של ההודעה
+            // להחזיר חזרה בעת שרת עובד
+
+        //await dispatch(addMessage(newMessage));
+      // }
+    } catch (error) {
+      console.error('Failed to process message:', error);
     }
   };
-
-  useEffect(() => {
-    if (currentMode === 'free') {
-      const newProgress = calculateFreeChatProgress();
-      setProgress(prev => ({
-        ...prev,
-        free: newProgress
-      }));
-    }
-  }, [currentMode, calculateFreeChatProgress]);
 
   return (
     <div className="max-w-4xl mx-auto p-4 space-y-4">
@@ -92,7 +107,8 @@ const ChatManager = () => {
       {/* Progress Tracking */}
       <ProgressBar progress={currentMode === 'free' ? progress.free : progress.structured} />
 
-      {/* Chat Interface - Using Original Components */}
+   
+      {/* Chat Interface */}
       <div className="bg-white rounded-lg shadow-lg overflow-hidden">
         {currentMode === 'free' ? (
           <FreeChat
@@ -110,5 +126,4 @@ const ChatManager = () => {
     </div>
   );
 };
-
-export default ChatManager;
+ export default ChatManager
