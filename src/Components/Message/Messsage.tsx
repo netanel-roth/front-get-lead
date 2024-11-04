@@ -1,7 +1,8 @@
 import React from 'react';
-import './Message.css';
+import './message.css';
+import { MessageProps } from '../../types/message';
 
-const Message = ({ sender, text }) => {
+const Message: React.FC<MessageProps> = ({ sender, text }) => {
   return (
     <div className={`message ${sender === 'user' ? 'message-user' : 'message-system'}`}>
       <p>{text}</p>

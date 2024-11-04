@@ -6,6 +6,7 @@ import Login from './pages/LoginPage';
 import { useAppSelector } from './Redux/hooks';
 import Home from './pages/Home';
 import UpdateAttendancePage from './pages/UpdateAttendancePage';
+import ChatManager from './Components/Chat/Chat';
 
 
 
@@ -19,6 +20,7 @@ const App: React.FC = () => {
       </header>
       <main className='App itemscenter'>
         <Routes>
+          <Route path='/Chat' Component={ChatManager}></Route>
           <Route path="/" Component={Home} />
           <Route path="/Login" Component={Login} />
           <Route path="/details" Component={UpdateAttendancePage} />

@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../Axios/axios';
-import { RootState } from './redux/store';
+import { RootState } from './store';
+import { MessageType } from '../types/message';
 
 // הגדרת הממשק (interface) למצב הטופס
 interface FormState {
   personalData: {
-    completedQuestions: string[];
     totalQuestions: number;
     questions: {
       name: string;
@@ -16,7 +16,6 @@ interface FormState {
     };
   };
   accidentData: {
-    completedQuestions: string[];
     totalQuestions: number;
     questions: {
       accidentDate: string;
@@ -26,7 +25,6 @@ interface FormState {
     };
   };
   injuryData: {
-    completedQuestions: string[];
     totalQuestions: number;
     questions: {
       injuryType: string;
@@ -37,11 +35,7 @@ interface FormState {
       treatmentPlan: string;
     };
   };
-  completionPercentage: {
-    personal: number;
-    accident: number;
-    injury: number;
-  };
+
   messages: { sender: string; text: string }[];
   isLoading: boolean;
   error: string | null;
@@ -50,7 +44,6 @@ interface FormState {
 // המצב ההתחלתי (initial state)
 const initialState: FormState = {
   personalData: {
-    completedQuestions: [],
     totalQuestions: 5,
     questions: {
       name: '',
@@ -61,7 +54,6 @@ const initialState: FormState = {
     },
   },
   accidentData: {
-    completedQuestions: [],
     totalQuestions: 4,
     questions: {
       accidentDate: '',
@@ -71,7 +63,6 @@ const initialState: FormState = {
     },
   },
   injuryData: {
-    completedQuestions: [],
     totalQuestions: 6,
     questions: {
       injuryType: '',
@@ -82,22 +73,29 @@ const initialState: FormState = {
       treatmentPlan: '',
     },
   },
-  completionPercentage: {
-    personal: 0,
-    accident: 0,
-    injury: 0,
-  },
   messages: [],
   isLoading: false,
   error: null,
 };
 
-// Async thunk לשליחת הודעה לשרת
-export const sendMessage = createAsyncThunk(
-  'form/sendMessage',
-  async ({ sender, text }: { sender: string; text: string }, { rejectWithValue }) => {
+// פעולה אסינכרונית לטעינת הנתונים מה-DB
+export const fetchInitialData = createAsyncThunk(
+  'form/fetchInitialData',
+  async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.post('/api/messages', { sender, text });
+      const response = await axios.get('/api/formData');
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const addMessage = createAsyncThunk(
+  'form/addMessage',
+  async (message: MessageType, { rejectWithValue }) => {
+    try {
+      const response = await axios.post('/api/messages', { message });
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data);
@@ -110,57 +108,55 @@ const formSlice = createSlice({
   name: 'form',
   initialState,
   reducers: {
-    updatePersonalQuestion: (state, action: PayloadAction<{ question: string; answer: string }>) => {
+    updatePersonalQuestion: (state:any, action: PayloadAction<{ question: string; answer: string }>) => {
       const { question, answer } = action.payload;
       state.personalData.questions[question] = answer;
       if (!state.personalData.completedQuestions.includes(question)) {
         state.personalData.completedQuestions.push(question);
       }
     },
-    updateAccidentQuestion: (state, action: PayloadAction<{ question: string; answer: string }>) => {
+    updateAccidentQuestion: (state:any, action: PayloadAction<{ question: string; answer: string }>) => {
       const { question, answer } = action.payload;
       state.accidentData.questions[question] = answer;
       if (!state.accidentData.completedQuestions.includes(question)) {
         state.accidentData.completedQuestions.push(question);
       }
     },
-    updateInjuryQuestion: (state, action: PayloadAction<{ question: string; answer: string }>) => {
+    updateInjuryQuestion: (state:any, action: PayloadAction<{ question: string; answer: string }>) => {
       const { question, answer } = action.payload;
       state.injuryData.questions[question] = answer;
       if (!state.injuryData.completedQuestions.includes(question)) {
         state.injuryData.completedQuestions.push(question);
       }
-    },
-    updateCompletionPercentage: (state) => {
-      state.completionPercentage.personal =
-        (state.personalData.completedQuestions.length / state.personalData.totalQuestions) * 100;
-      state.completionPercentage.accident =
-        (state.accidentData.completedQuestions.length / state.accidentData.totalQuestions) * 100;
-      state.completionPercentage.injury =
-        (state.injuryData.completedQuestions.length / state.injuryData.totalQuestions) * 100;
-    },
+    }
   },
   extraReducers: (builder) => {
     builder
-      .addCase(sendMessage.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(sendMessage.fulfilled, (state, action: PayloadAction<{ sender: string; text: string }>) => {
-        state.isLoading = false;
-        state.messages.push(action.payload);
-      })
-      .addCase(sendMessage.rejected, (state, action: PayloadAction<any>) => {
-        state.isLoading = false;
-        state.error = action.payload.message;
-      });
+    .addCase(addMessage.fulfilled, (state, action: PayloadAction<MessageType>) => {
+      state.messages.push(action.payload); // עדכון Redux עם ההודעה החדשה
+    })
+      // .addCase(sendMessage.pending, (state) => {
+      //   state.isLoading = true;
+      //   state.error = null;
+      // })
+      // .addCase(sendMessage.fulfilled, (state, action: PayloadAction<{ sender: string; text: string }>) => {
+      //   state.isLoading = false;
+      //   state.messages.push(action.payload);
+      // })
+      // .addCase(sendMessage.rejected, (state, action: PayloadAction<any>) => {
+      //   state.isLoading = false;
+      //   state.error = action.payload.message;
+      // });
   },
 });
 
 // בורר לבחירת הודעות והשלמה
 export const selectMessages = (state: RootState) => state.form.messages;
-export const selectCompletionPercentage = (state: RootState) => state.form.completionPercentage;
+export const selectPersonalData = (state: RootState) => state.form.personalData;
+export const selectAccidentData = (state: RootState) => state.form.accidentData;
+export const selectInjuryData = (state: RootState) => state.form.injuryData;
+
 
 // ייצוא הפעולות והרידוסר
-export const { updatePersonalQuestion, updateAccidentQuestion, updateInjuryQuestion, updateCompletionPercentage } = formSlice.actions;
+export const { updatePersonalQuestion, updateAccidentQuestion, updateInjuryQuestion } = formSlice.actions;
 export default formSlice.reducer;

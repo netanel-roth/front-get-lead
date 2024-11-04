@@ -1,56 +1,33 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import axios from 'axios';
-import Message from './Message';
+import React from 'react';
+import { ChatProps } from '../../types/Chat';
 
-const FreeConversation = () => {
-  const [userMessage, setUserMessage] = useState("");
-  const [messages, setMessages] = useState([]);
-  const dispatch = useDispatch();
 
-  const handleInput = async () => {
-    try {
-      const userResponse = { sender: 'user', text: userMessage };
-      setMessages([...messages, userResponse]);
+const FreeChat: React.FC<ChatProps> = ({ messages, onMessageSubmit }) => {
+  const [input, setInput] = React.useState('');
 
-      await axios.post('/api/saveMessage', { message: userMessage });
-
-      const aiResponse = await axios.post('/api/analyzeMessage', { message: userMessage });
-      const { identifiedFields } = aiResponse.data;
-
-      identifiedFields.forEach(field => {
-        dispatch({
-          type: `UPDATE_${field.topic.toUpperCase()}_QUESTION`,
-          payload: { question: field.question, answer: field.answer }
-        });
-      });
-
-      dispatch({
-        type: 'UPDATE_COMPLETION_PERCENTAGE'
-      });
-
-      setUserMessage("");
-    } catch (error) {
-      console.error("Error handling message:", error);
+  const handleSubmit = () => {
+    if (input.trim()) {
+      onMessageSubmit({ sender: 'user', text: input });
+      setInput('');
     }
   };
-
   return (
     <div>
-      {messages.map((msg, idx) => (
-        <Message key={idx} sender={msg.sender} text={msg.text} />
-      ))}
+      <div>
+        {messages.map((msg:any, idx:number) => (
+          <div key={idx} className={msg.sender === 'user' ? 'user-message' : 'system-message'}>
+            {msg.text}
+          </div>
+        ))}
+      </div>
       <input
         type="text"
-        value={userMessage}
-        onChange={(e) => setUserMessage(e.target.value)}
-        placeholder="Type your message..."
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') handleInput();
-        }}
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
       />
     </div>
   );
 };
 
-export default FreeConversation;
+export default FreeChat;
