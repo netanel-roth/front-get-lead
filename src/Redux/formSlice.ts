@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../Axios/axios';
-import { RootState } from './store';
+import store, { RootState } from './store';
 import { MessageType } from '../types/message';
 
 // הגדרת הממשק (interface) למצב הטופס
@@ -91,7 +91,7 @@ export const fetchInitialData = createAsyncThunk(
   }
 );
 
-export const addMessage = createAsyncThunk(
+export const addMessageThunk = createAsyncThunk(
   'form/addMessage',
   async (message: MessageType, { rejectWithValue }) => {
     // קריאה לשרת להוספת הודעה
@@ -103,6 +103,36 @@ export const addMessage = createAsyncThunk(
     }
   }
 );
+
+
+// פונקציה לקבלת תגובה מה-AI ושמירתה
+export const getAIResponse = createAsyncThunk(
+  'form/getAIResponse',
+  async ({ prevMessage }: { prevMessage?: MessageType }, { dispatch, rejectWithValue }) => {
+    try {
+      const endpoint = !prevMessage ? '/api/chat/initial' : '/api/chat/response';
+      
+      // קבלת תשובה מה-AI
+      const response = await axios.post(endpoint, {
+        previousMessage: prevMessage?.text || null,
+        messageHistory: prevMessage ? JSON.stringify(store.getState().form.messages) : null
+      });
+
+      // יצירת הודעת מערכת
+      const systemMessage: MessageType = {
+        sender: 'system',
+        text: response.data.text      };
+
+      // שמירת ההודעה ב-DB וברידקס
+
+      return systemMessage;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data || 'Failed to get AI response');
+    }
+  }
+);
+
+
 
 // יצירת Slice לניהול מצב הטופס
 const formSlice = createSlice({
@@ -136,7 +166,7 @@ const formSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-    .addCase(addMessage.fulfilled, (state, action: PayloadAction<MessageType>) => {
+    .addCase(addMessageThunk.fulfilled, (state, action: PayloadAction<MessageType>) => {
       state.messages.push(action.payload); // עדכון Redux עם ההודעה החדשה
     })
       // .addCase(sendMessage.pending, (state) => {
@@ -162,5 +192,5 @@ export const selectInjuryData = (state: RootState) => state.form.injuryData;
 
 
 // ייצוא הפעולות והרידוסר
-export const { updatePersonalQuestion, updateAccidentQuestion, updateInjuryQuestion } = formSlice.actions;
+export const {addMessage, updatePersonalQuestion, updateAccidentQuestion, updateInjuryQuestion } = formSlice.actions;
 export default formSlice.reducer;

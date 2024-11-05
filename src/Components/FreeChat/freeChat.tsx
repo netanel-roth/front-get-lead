@@ -1,43 +1,47 @@
 import React, { useEffect } from 'react';
 import { ChatProps } from '../../types/Chat';
 import Message from '../Message/Messsage';
+import { useAppDispatch, useAppSelector } from '../../Redux/hooks';
+import { addMessage, getAIResponse } from '../../Redux/formSlice';
 
 const FreeChat: React.FC<ChatProps> = ({ messages, onMessageSubmit }) => {
   const [input, setInput] = React.useState('');
   const [isFirstMessage, setIsFirstMessage] = React.useState(true);
+  const dispatch = useAppDispatch();
 
-  // בקשת השאלה הראשונית מהשרת בטעינה
-  useEffect(() => {
-    const getInitialQuestion = async () => {
-      if (isFirstMessage && messages.length === 0) {
-        try {
-          await onMessageSubmit({ 
-            sender: 'system', 
-            text: 'INITIAL_PROMPT' 
-          });
-          setIsFirstMessage(false);
-        } catch (error) {
-          console.error('Failed to get initial question:', error);
-        }
-      }
-    };
+   // קבלת שאלה ראשונית מה-AI בטעינה
 
-    getInitialQuestion();
-  }, [isFirstMessage, messages.length, onMessageSubmit]);
+   useEffect(() => {
+    if (messages.length === 0) {
+      // יש להחזיר לאחר שהשרת יעבוד!!!!!!!!!!
+
+       //dispatch(getAIResponse({}));  // שולחים אובייקט ריק
+    // יש להשמיט לאחר שהשרת יעבוד!!!!!!!!!!
+
+  dispatch(addMessage({
+    sender: 'system',
+    text: 'שלום, נשאר לך רק קצת נתונים להשלים, איפה היתה התאונה?'  }));
+    }
+  }, [dispatch, messages.length]);
 
   const handleSubmit = async () => {
     if (input.trim()) {
-      try {
-        await onMessageSubmit({
-          sender: 'user',
-          text: input
-        });
-        setInput('');
-      } catch (error) {
-        console.error('Failed to send message:', error);
-      }
+            // יש להחזיר לאחר שהשרת יעבוד!!!!!!!!!!
+      // await onMessageSubmit({
+      //   sender: 'user',
+      //   text: input.trim()
+      // });
+    // יש להשמיט לאחר שהשרת יעבוד!!!!!!!!!!
+    dispatch(addMessage({
+      sender: 'user',
+      text: input.trim() }));
+       setInput('');
+
+       dispatch(addMessage({
+        sender: 'system',
+        text: 'מעולה, איך אתה מרגיש היום?'}));
+    } 
     }
-  };
   
   return (
     <div className="flex flex-col h-full p-4">

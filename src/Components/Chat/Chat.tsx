@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import FreeChat from '../FreeChat/freeChat';
 import StructuredChat from '../StructuredChat/structuredChat';
 import ProgressBar from '../ProgressBar/progressBar';
-import { fetchInitialData ,addMessage, selectMessages,selectPersonalData, selectAccidentData, selectInjuryData} from '../../Redux/formSlice';
+import { fetchInitialData ,addMessage, selectMessages,selectPersonalData, selectAccidentData, selectInjuryData, getAIResponse, addMessageThunk} from '../../Redux/formSlice';
 import { RootState,AppDispatch  } from '../../Redux/store';
 import { MessageType } from '../../types/message';
 import { useAppDispatch } from '../../Redux/hooks';
@@ -52,40 +52,55 @@ const ChatManager = () => {
     }));
   };
 
+
+      // יש להחזיר לאחר שהשרת יעבוד!!!!!!!!!!
+
+
+  // טעינת כל הנתונים בתחילת הרכיב
+  useEffect(() => {
+    const loadInitialData = async () => {
+      try {
+        await dispatch(fetchInitialData()).unwrap();
+        
+        // אם אנחנו במצב שיחה חופשית ואין הודעות, נבקש שאלה ראשונית
+        if (currentMode === 'free' && messages.length === 0) {
+          await dispatch(getAIResponse({ prevMessage: undefined }));
+        }
+      } catch (error) {
+        console.error('Failed to load initial data:', error);
+      }
+    };
+
+    loadInitialData();
+  }, [dispatch]);
+
+
+
   const handleMessageSubmit = async (newMessage: MessageType) => {
     try {
-            // להחזיר חזרה בעת שרת עובד
-
-      if (currentMode === 'free') {
-        // בשיחה חופשית - שליחה לשרת וקבלת תשובה
-        // const resultAction = await dispatch(addMessage(newMessage));
+        // קודם שומרים את הודעת המשתמש
+        await dispatch(addMessageThunk(newMessage)).unwrap();
         
-        // if (addMessage.fulfilled.match(resultAction)) {
-        //   const aiResponse = resultAction.payload;
-        //   if (aiResponse.text !== 'INITIAL_PROMPT') {
-            // שליחת תשובת ה-AI כהודעה חדשה
-            // await dispatch(addMessage({
-            //   sender: 'system',
-            //   text: aiResponse.text
-            // }));
-          }
-          
+        // מבקשים תשובה מהמערכת ושומרים אותה
+        const resultAction = await dispatch(getAIResponse({ 
+          prevMessage: newMessage 
+        }));
+        if (currentMode === 'free') {
+          if (getAIResponse.fulfilled.match(resultAction)) {
+          await dispatch(addMessageThunk(resultAction.payload)).unwrap();
+
           const newProgress = calculateFreeChatProgress();
           setProgress(prev => ({
             ...prev,
             free: newProgress
           }));
         }
-      // } else {
-        // בשיחה מובנית - רק שמירה של ההודעה
-            // להחזיר חזרה בעת שרת עובד
-
-        //await dispatch(addMessage(newMessage));
-      // }
+      }
     } catch (error) {
       console.error('Failed to process message:', error);
     }
   };
+
 
   return (
     <div className="max-w-4xl mx-auto p-4 space-y-4">

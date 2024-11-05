@@ -5,12 +5,15 @@ import Message from '../Message/Messsage';
 import { StructuredChatProps } from '../../types/structuredChat';
 import { RootState } from '../../Redux/store';
 import 'chart.js/auto';  // הוסף את זה בראש הקובץ
+import { addMessage, addMessageThunk } from '../../Redux/formSlice';
+import { useAppDispatch } from '../../Redux/hooks';
 
 const StructuredChat: React.FC<StructuredChatProps> = ({ messages, onMessageSubmit, onProgressUpdate }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [input, setInput] = useState('');
   const [currentMessage, setCurrentMessage] = useState<string | null>(null);
   const [currentTopic, setCurrentTopic] = useState<'personalData' | 'accidentData' | 'injuryData'>('personalData');
+  const dispatch = useAppDispatch();  // במקום useDispatch רגיל
 
   const questionsByTopic = {
     personalData: [
@@ -37,15 +40,29 @@ const StructuredChat: React.FC<StructuredChatProps> = ({ messages, onMessageSubm
     return data.questions[field as keyof typeof data.questions];
   };
 
-  const askQuestion = () => {
+  const askQuestion= async () => {
     const currentQuestions = questionsByTopic[currentTopic];
     const currentQuestionInfo = currentQuestions[currentQuestionIndex];
     const existingAnswer = getAnswerFromRedux(currentTopic, currentQuestionInfo.field);
 
     if (existingAnswer) {
       setCurrentMessage(`כבר ענית על ${currentQuestionInfo.question}: ${existingAnswer}. האם זה תקין?`);
+            // יש להחזיר לאחר שהשרת יעבוד!!!!!!!!!!
+
+      // await dispatch(addMessageThunk({sender:'system',text:`כבר ענית על ${currentQuestionInfo.question}: ${existingAnswer}. האם זה תקין?`})).unwrap();
+    // יש להשמיט לאחר שהשרת יעבוד!!!!!!!!!!
+    dispatch(addMessage({
+      sender: 'system',
+      text:`כבר ענית על ${currentQuestionInfo.question}: ${existingAnswer}. האם זה תקין?`}));
     } else {
       setCurrentMessage(currentQuestionInfo.question);
+     // יש להחזיר לאחר שהשרת יעבוד!!!!!!!!!!
+
+      // await dispatch(addMessageThunk({sender:'system',text:currentQuestionInfo.question})).unwrap();
+    // יש להשמיט לאחר שהשרת יעבוד!!!!!!!!!!
+    dispatch(addMessage({
+      sender: 'system',
+      text:currentQuestionInfo.question}));
     }
   };
 
@@ -57,8 +74,15 @@ const StructuredChat: React.FC<StructuredChatProps> = ({ messages, onMessageSubm
 
   const handleSubmit = async () => {
     if (input.trim()) {
-      onMessageSubmit({ sender: 'user', text: input });
-  
+   // יש להחזיר לאחר שהשרת יעבוד!!!!!!!!!!
+
+      // onMessageSubmit({ sender: 'user', text: input });
+     // יש להשמיט לאחר שהשרת יעבוד!!!!!!!!!!
+      dispatch(addMessage({
+        sender: 'system',
+        text: input.trim()}));
+        setInput('');
+
       const currentQuestions = questionsByTopic[currentTopic];
       // חסר! צריך לחשב את האחוז ולקרוא ל-onProgressUpdate
       const progress = ((currentQuestionIndex + 1) / currentQuestions.length) * 100;
